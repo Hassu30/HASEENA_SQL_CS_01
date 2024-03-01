@@ -1,0 +1,39 @@
+-->My Case Study 01
+
+-- Create Departments table
+CREATE TABLE Departments_1 (DepartmentID INT PRIMARY KEY,DepartmentName VARCHAR(50),ManagerID INT,Location VARCHAR(100));
+
+-- Inserting Departments
+INSERT INTO Departments_1(DepartmentID, DepartmentName, ManagerID, Location)
+VALUES (1, 'HR', 101, 'Headquarters'),
+(2, 'IT', 201, 'Tech Park'),
+(3, 'Finance', 301, 'Downtown');
+
+-- Create Employees table
+CREATE TABLE Employees_1 (EmployeeID INT PRIMARY KEY,FirstName VARCHAR(50),LastName VARCHAR(50),DateOfBirth DATE,Gender CHAR(1),Position VARCHAR(50),DepartmentID INT,DateOfJoining DATE,FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID));
+
+-- Inserting Employees
+INSERT INTO Employees_1 (EmployeeID, FirstName, LastName, DateOfBirth, Gender,
+Position, DepartmentID, DateOfJoining)
+VALUES (101, 'John', 'Doe', '1985-05-15', 'M', 'HR Manager', 1, '2010-01-15'),
+(102, 'Jane', 'Smith', '1990-08-22', 'F', 'Software Engineer', 2, '2015-03-10'),
+(103, 'Bob', 'Johnson', '1982-11-10', 'M', 'Accountant', 3, '2018-07-05');
+
+Select *from Employees_1;
+Select *from Departments_1;
+
+--1.Retrieve all employees in the IT department
+SELECT *FROM Employees_1 WHERE DepartmentID = (SELECT DepartmentID FROM Departments WHERE DepartmentName = 'IT');
+
+--2.Update John Doe's position to Senior HR Manager
+UPDATE Employees_1 SET Position = 'Senior HR Manager' WHERE EmployeeID = 101;
+SELECT * FROM Employees_1 WHERE EmployeeID = 101;
+
+--3.Remove an employee 
+DELETE FROM Employees WHERE EmployeeID = 102;
+
+--4.Retrieve the department name and location for the employee with ID 102
+SELECT D.DepartmentName, D.Location FROM Departments_1 D JOIN Employees_1 E ON D.DepartmentID = E.DepartmentID WHERE E.EmployeeID = 102;
+
+--5.Write a SQL query to retrieve the details of all employees who joined the company after the year 2015.
+SELECT * FROM Employees_1 WHERE DateOfJoining > '2015-01-01';
